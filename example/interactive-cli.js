@@ -2,6 +2,21 @@
 
 var LifxClient = require('../lib/lifx').Client;
 var client = new LifxClient();
+var util = require('util');
+
+client.on('message', function(msg, rinfo) {
+  if (typeof msg.type === 'string') {
+    // Known packages send by the lights as broadcast
+    switch (msg.type) {
+      case 'stateZone':
+      case 'stateMultiZone':
+        // console.log(msg, ' from ' + rinfo.address);
+        break;
+      default:
+        break;
+    }
+  }
+});
 
 client.on('light-new', function(light) {
   console.log('New light found.');
@@ -51,6 +66,8 @@ process.stdin.setEncoding('utf8');
 process.stdin.setRawMode(true);
 
 process.stdin.on('data', function(key) {
+  var multiZoneLight;
+  var i;
   if (key === '1') {
     client.lights().forEach(function(light) {
       light.on(0, function(err) {
@@ -123,5 +140,50 @@ process.stdin.on('data', function(key) {
   } else if (key === '\u0003' || key === '0') { // Ctrl + C
     client.destroy();
     process.exit(); // eslint-disable-line no-process-exit
+  } else if (key === 's') {
+    multiZoneLight = client.light('Sofa');
+    multiZoneLight.getColorZones(0, 15, function(err, data) {
+      if (err) {
+        console.log('Requesting color zone state from ' + multiZoneLight.id + ' failed');
+      }
+      console.log('Received data from ' + multiZoneLight.id + ':');
+      console.log(util.inspect(data));
+    });
+  } else if (key === 'b') {
+    multiZoneLight = client.light('Bed');
+    multiZoneLight.getColorZones(0, 7, function(err, data) {
+      if (err) {
+        console.log('Requesting state for color zones from ' + multiZoneLight.id + ' failed');
+      }
+      console.log('Received data from ' + multiZoneLight.id + ':');
+      console.log(util.inspect(data));
+    });
+  } else if (key === 'n') {
+    multiZoneLight = client.light('Bed');
+    multiZoneLight.getColorZones(8, 15, function(err, data) {
+      if (err) {
+        console.log('Requesting state for color zones from ' + multiZoneLight.id + ' failed');
+      }
+      console.log('Received data from ' + multiZoneLight.id + ':');
+      console.log(util.inspect(data));
+    });
+  } else if (key === 'r') {
+    multiZoneLight = client.light('Sofa');
+    for (i = 0; i < 16; i++) {
+      var sofaHue = Math.ceil(360 / 16 * i + 1);
+      if (sofaHue > 360) {
+        sofaHue = 0;
+      }
+      multiZoneLight.colorZones(i, i, sofaHue, 100, 100, undefined, 0, i === 15);
+    }
+  } else if (key === 'k') {
+    multiZoneLight = client.light('Bed');
+    for (i = 0; i < 32; i++) {
+      var bedHue = Math.ceil(360 / 31 * i + 1);
+      if (bedHue > 360) {
+        bedHue = 0;
+      }
+      multiZoneLight.colorZones(i, i, bedHue, 100, 100, undefined, 0, i === 31);
+    }
   }
 });
