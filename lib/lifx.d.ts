@@ -1,4 +1,6 @@
-export class Client {
+import { EventEmitter } from 'events';
+
+export class Client extends EventEmitter {
 
   /**
   * Creates a lifx client
@@ -47,7 +49,7 @@ export class Client {
   * @param {String} [options.broadcast] The broadcast address to use for light discovery
   * @param {Function} [callback] Called after initialation
   */
-  init(options: any, callback: any): any;
+  init(options?: any, callback?: any): any;
 
   /**
   * Find a light by label, id or ip
@@ -62,7 +64,7 @@ export class Client {
   * @param {String} [status='on'] Status to filter for, empty string for all
   * @return {Array} Lights
   */
-  lights(status: any): any;
+  lights(status?: any): any;
 
   /**
   * Processes a discovery report packet to update internals
@@ -132,6 +134,7 @@ export class Client {
 }
 
 export class Light {
+  public id: string;
 
   /**
   * A representation of a light bulb
@@ -154,7 +157,7 @@ export class Light {
   * @param {Number} [duration] transition time in milliseconds
   * @param {Function} [callback] called when light did receive message
   */
-  color(hue: any, saturation: any, brightness: any, kelvin: any, duration: any, callback: any): void;
+  color(hue: any, saturation: any, brightness: any, kelvin: any, duration: any, callback?: any): void;
 
   /**
   * Changes the color to the given rgb value
@@ -166,7 +169,7 @@ export class Light {
   * @param {Number} [duration] transition time in milliseconds
   * @param {Function} [callback] called when light did receive message
   */
-  colorRgb(red: any, green: any, blue: any, duration: any, callback: any): void;
+  colorRgb(red: any, green: any, blue: any, duration: any, callback?: any): void;
 
   /**
   * Changes the color to the given rgb value
@@ -176,7 +179,7 @@ export class Light {
   * @param {Number} [duration] transition time in milliseconds
   * @param {Function} [callback] called when light did receive message
   */
-  colorRgbHex(hexString: any, duration: any, callback: any): void;
+  colorRgbHex(hexString: any, duration: any, callback?: any): void;
 
   /**
   * Changes a color zone range to the given HSBK value
@@ -190,7 +193,7 @@ export class Light {
   * @param {Boolean} [apply=true] apply changes immediately or leave pending for next apply
   * @param {Function} [callback] called when light did receive message
   */
-  colorZones(startIndex: any, endIndex: any, hue: any, saturation: any, brightness: any, kelvin: any, duration: any, apply: any, callback: any): void;
+  colorZones(startIndex: any, endIndex: any, hue: any, saturation: any, brightness: any, kelvin?: any, duration?: any, apply?: any, callback?: any): void;
 
   /**
   * Requests ambient light value of the light
@@ -231,7 +234,7 @@ export class Light {
   * @param {Boolean} [cache=false] return cached result if existent
   * @return {Function} callback(err, label)
   */
-  getLabel(callback: any, cache: any): any;
+  getLabel(callback: any, cache?: any): (err: any, label: string) => void;
 
   /**
   * Requests the current maximum setting for the infrared channel
@@ -277,7 +280,7 @@ export class Light {
   * @param {Number} [duration] transition time in milliseconds
   * @param {Function} [callback] called when light did receive message
   */
-  off(duration: any, callback: any): void;
+  off(duration?: any, callback?: any): void;
 
   /**
   * Turns the light on
@@ -285,7 +288,7 @@ export class Light {
   * @param {Number} [duration] transition time in milliseconds
   * @param {Function} [callback] called when light did receive message
   */
-  on(duration: any, callback: any): void;
+  on(duration?: any, callback?: any): void;
 
   /**
   * Sets the label of light
@@ -293,7 +296,7 @@ export class Light {
   * @param {String} label new label to be set, maximum 32 bytes
   * @param {Function} [callback] called when light did receive message
   */
-  setLabel(label: any, callback: any): void;
+  setLabel(label: any, callback?: any): void;
 }
 
 export const constants: {
