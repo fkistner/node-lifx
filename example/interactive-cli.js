@@ -4,6 +4,7 @@ var LifxClient = require('../lib/lifx').Client;
 var client = new LifxClient();
 
 client.on('light-new', function(light) {
+  var stateInfo;
   console.log('New light found.');
   console.log('ID: ' + light.id);
   console.log('IP: ' + light.address + ':' + light.port);
@@ -14,6 +15,7 @@ client.on('light-new', function(light) {
     console.log('Label: ' + info.label);
     console.log('Power:', (info.power === 1) ? 'on' : 'off');
     console.log('Color:', info.color);
+    stateInfo = info;
   });
 
   light.getHardwareVersion(function(err, info) {
@@ -22,6 +24,13 @@ client.on('light-new', function(light) {
     }
     console.log('Device Info: ' + info.vendorName + ' - ' + info.productName);
     console.log('Features: ', info.productFeatures, '\n');
+
+    if (info.productFeatures.infrared) {
+      console.log('Requesting getMaxIR from light ' + stateInfo.label);
+      light.getMaxIR(function(maxIr) {
+        console.log(stateInfo.label + ' max IR: ' + maxIr);
+      });
+    }
   });
 });
 
