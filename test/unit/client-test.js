@@ -26,12 +26,12 @@ suite('Client', () => {
     seenOnDiscovery: 0
   };
 
-  beforeEach(() => {
+  setup(() => {
     client = new Client();
     client.devices.f37a4311b857 = new Light(lightProps);
   });
 
-  afterEach(() => {
+  teardown(() => {
     client.destroy();
   });
 
@@ -409,11 +409,11 @@ suite('Client', () => {
   });
 
   suite('message handler', () => {
-    beforeEach(() => {
-      clock = lolex.install(Date.now());
+    setup(() => {
+      clock = lolex.install({ now: Date.now() });
     });
 
-    afterEach(() => {
+    teardown(() => {
       clock.uninstall();
     });
 
@@ -531,11 +531,11 @@ suite('Client', () => {
   });
 
   suite('sending process', () => {
-    beforeEach(() => {
-      clock = lolex.install(Date.now());
+    setup(() => {
+      clock = lolex.install({ now: Date.now() });
     });
 
-    afterEach(() => {
+    teardown(() => {
       clock.uninstall();
     });
 

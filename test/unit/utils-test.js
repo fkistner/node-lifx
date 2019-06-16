@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 'use strict';
 
 const utils = require('../../').utils;
@@ -136,7 +137,12 @@ suite('Utils', () => {
       productFeatures: {
         color: true,
         infrared: false,
-        multizone: false
+        multizone: false,
+        chain: false,
+        'temperature_range': [
+          2500,
+          9000
+        ]
       }
     });
 
@@ -147,7 +153,12 @@ suite('Utils', () => {
       productFeatures: {
         color: false,
         infrared: false,
-        multizone: false
+        multizone: false,
+        chain: false,
+        'temperature_range': [
+          2700,
+          6500
+        ]
       }
     });
 

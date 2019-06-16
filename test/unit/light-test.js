@@ -43,7 +43,7 @@ suite('Light', () => {
     hue: 0,
     saturation: 0,
     brightness: 0,
-    kelvin: 2500,
+    kelvin: 1500,
     zoneIndex: 0
   };
 
@@ -56,7 +56,7 @@ suite('Light', () => {
     zoneIndex: 255
   };
 
-  beforeEach(() => {
+  setup(() => {
     client = new Lifx();
     bulb = new Light({
       client: client,
@@ -67,7 +67,7 @@ suite('Light', () => {
     });
   });
 
-  afterEach(() => {
+  teardown(() => {
     client.destroy();
   });
 

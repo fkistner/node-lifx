@@ -7,28 +7,21 @@
     "url": "https://github.com/MariusRumpf/node-lifx/issues"
   },
   "dependencies": {
-    "eventemitter3": "^2.0.3",
-    "lodash": "^4.17.11",
-    "postinstall-build": "^5.0.1"
+    "eventemitter3": "^3.1.2",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
-    "babel-preset-env": "^1.7.0",
     "chai": "^4.2.0",
     "codecov.io": "^0.1.6",
-    "eslint": "^4.19.1",
-    "istanbul": "^0.4.0",
-    "lolex": "^1.6.0",
-    "mkdirp": "^0.5.1",
-    "mocha": "^6.0.2",
-    "rimraf": "^2.6.3",
-    "sinon": "^4.5.0"
+    "eslint": "^5.16.0",
+    "nyc": "^14.1.1",
+    "lolex": "^4.1.0",
+    "mocha": "^6.1.4",
+    "sinon": "^7.3.2"
   },
   "directories": {
     "test": "test",
-    "lib": "lib",
     "example": "example"
   },
   "homepage": "https://github.com/MariusRumpf/node-lifx#readme",
@@ -39,8 +32,8 @@
     "lightbulb"
   ],
   "license": "MIT",
-  "main": "./lib/lifx",
-  "types": "./lib/lifx.d.ts",
+  "main": "./src/lifx",
+  "types": "./src/lifx.d.ts",
   "engines": {
     "node": ">=4"
   },
@@ -49,18 +42,12 @@
     "url": "git+https://github.com/MariusRumpf/node-lifx.git"
   },
   "scripts": {
-    "prebuild": "npm run clean && mkdirp lib/lifx && cp src/lifx/products.json lib/lifx",
-    "build": "npm run prebuild && babel src --out-dir lib",
-    "build:watch": "npm run build -- --watch",
-    "clean": "rimraf lib",
-    "prepublishOnly": "npm run build",
-    "postinstall": "postinstall-build lib",
     "lint": "eslint src/ test/ example/ cli.js",
     "lint:fix": "npm run lint -- --fix",
-    "pretest": "npm run lint && npm run build",
-    "unittest": "mocha -u tdd -r babelhook --recursive test/unit/ || true",
-    "unittest:bail": "mocha -u tdd -r babelhook --recursive test/unit/ --bail || true",
-    "test": "istanbul cover -root lib/ node_modules/mocha/bin/_mocha -- -u tdd -r babelhook --recursive test/unit/",
+    "pretest": "npm run lint",
+    "unittest": "mocha || true",
+    "unittest:bail": "mocha --bail || true",
+    "test": "nyc mocha",
     "report-coverage": "cat ./coverage/coverage.json | node_modules/codecov.io/bin/codecov.io.js"
   }
 }
